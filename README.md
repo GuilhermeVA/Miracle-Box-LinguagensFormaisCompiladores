@@ -1,4 +1,4 @@
-# 🎵 BuzzLang: Linguagem de Programação Musical
+# 🎵 Miracle Box: Linguagem de Programação Musical
 O BuzzLang é uma linguagem de domínio específico (DSL) criada para facilitar a composição de melodias em microcontroladores utilizando buzzers. O projeto faz parte da disciplina de Linguagens Formais e Compiladores.
 
 ## Objetivo
