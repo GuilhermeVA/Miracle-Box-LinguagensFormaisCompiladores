@@ -1,7 +1,7 @@
-# 🎵 Miracle: Linguagem de Programação Musical
+# 🎵⭐ Miracle: Linguagem de Programação Musical
 O Miracle é uma linguagem de domínio específico (DSL) criada para facilitar a composição de melodias em microcontroladores utilizando buzzers. O projeto faz parte da disciplina de Linguagens Formais e Compiladores.
 
-## Objetivo
+## 🎯 Objetivo
 O objetivo do projeto é criar um compilador que lê um arquivo de texto com comandos musicais e o traduz para código C++ (Arduino), permitindo que qualquer pessoa crie músicas sem precisar lidar diretamente com frequências complexas ou cálculos de milissegundos.
 
 ## 🛠️ Arquitetura do Projeto
