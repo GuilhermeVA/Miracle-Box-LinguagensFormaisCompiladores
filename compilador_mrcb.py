@@ -8,7 +8,7 @@ NOTA(E, 500); $ Toca Mi por 500ms
 """
 
 codigo_miracle_box_2 = """ $ Testando
-123
+NOTA(C, 500);
 $Fim do teste
 
 """
@@ -24,8 +24,8 @@ REPETIR(4) {
 
 """
 
-
-#Definição do o que é um token
+# ------------------------------------------------------------------------------------------------------------------
+#Tokens
 class Token:
     def __init__(self, tipo, valor, linha):
         self.tipo = tipo
@@ -58,6 +58,7 @@ ESPECIFICACAO_TOKENS = [
 ]
 
 
+# ------------------------------------------------------------------------------------------------------------------
 #Função do análisador léxico - Geração de tokens
 def analisador_lexico(codigo_fonte):
     linha_atual = 1
@@ -88,4 +89,97 @@ def analisador_lexico(codigo_fonte):
 
 
 
-print(analisador_lexico(codigo_miracle_box_3))
+#print(analisador_lexico(codigo_miracle_box_2))
+
+
+
+# ------------------------------------------------------------------------------------------------------------------
+# Análisador sintático - Parser
+class Parser:
+    def __init__(self, tokens):
+        self.tokens = tokens
+        self.pos = 0  # Posição atual na lista de tokens
+
+    def token_atual(self):
+        return self.tokens[self.pos] if self.pos < len(self.tokens) else None
+
+    def consumir(self, tipo_esperado):
+        #Verifica se o token atual é o esperado e pula para o próximo.
+        token = self.token_atual()
+        if token and token.tipo == tipo_esperado:
+            self.pos += 1
+            return token
+        else:
+            raise Exception(f"Erro Sintático: Esperava {tipo_esperado} mas encontrei {token.tipo if token else 'FIM'} na linha {token.linha if token else '?'}")
+    
+    def parse_programa(self):
+        #Ponto de entrada: lê todos os comandos até o fim dos tokens
+        ast = []
+        while self.token_atual() is not None:
+            ast.append(self.parse_comando())
+        return ast
+
+    def parse_comando(self):
+        token = self.token_atual()
+        if token.tipo == 'TOK_DEFINIR':
+            return self.parse_definir()
+        elif token.tipo == 'TOK_REPETIR':
+            return self.parse_repetir()
+        elif token.tipo == 'TOK_NOTA':
+            return self.parse_nota()
+        elif token.tipo == 'TOK_ESPERAR':
+            return self.parse_esperar()
+        else:
+            raise Exception(f"Erro Sintático na linha {token.linha}: Comando inesperado {token.valor}")
+        
+
+
+    #Implementação das regras sintáticas
+    def parse_definir(self):
+        self.consumir('TOK_DEFINIR')
+        self.consumir('TOK_LPAREN')
+        propriedade = self.consumir('TOK_ID').valor 
+        self.consumir('TOK_VIRGULA')
+        valor = self.consumir('TOK_NUM').valor       
+        self.consumir('TOK_RPAREN')
+        self.consumir('TOK_PVIRG')
+        return {"acao": "DEFINIR", "campo": propriedade, "valor": valor}
+
+    def parse_repetir(self):
+        self.consumir('TOK_REPETIR')
+        self.consumir('TOK_LPAREN')
+        vezes = self.consumir('TOK_NUM').valor
+        self.consumir('TOK_RPAREN')
+        self.consumir('TOK_LCHAVE')
+        
+        # Lista para guardar os comandos que estão dentro do loop
+        comandos_internos = []
+        
+        # Enquanto não encontrar o fecha chaves '}', continua lendo comandos
+        while self.token_atual() and self.token_atual().tipo != 'TOK_RCHAVE':
+            comandos_internos.append(self.parse_comando())
+            
+        self.consumir('TOK_RCHAVE')
+        return {"acao": "REPETIR", "vezes": vezes, "conteudo": comandos_internos}
+    
+    def parse_nota(self):
+        self.consumir('TOK_NOTA')
+        self.consumir('TOK_LPAREN')
+        tom = self.consumir('TOK_TOM').valor
+        self.consumir('TOK_VIRGULA')
+        valor = self.consumir('TOK_NUM').valor       
+        self.consumir('TOK_RPAREN')
+        self.consumir('TOK_PVIRG')
+        return {"acao": "NOTA", "tom": tom, "tempo(ms)": valor}
+    
+    def parse_esperar(self):
+        self.consumir('TOK_ESPERAR')
+        self.consumir('TOK_LPAREN')
+        valor = self.consumir('TOK_NUM').valor       
+        self.consumir('TOK_RPAREN')
+        self.consumir('TOK_PVIRG')
+        return {"acao": "ESPERAR", "tempo(ms)": valor}
+    
+
+parser = Parser(analisador_lexico(codigo_miracle_box_2))
+print(parser.parse_programa())
