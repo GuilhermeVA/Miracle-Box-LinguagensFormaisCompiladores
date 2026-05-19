@@ -81,6 +81,85 @@ class Esperar:
         return f"Esperar({self.duracao})"
 
 
+class AnalisadorSemantico:
+    PROPRIEDADES_VALIDAS = {
+        'bpm': (1, 300),
+        'volume': (0, 100),
+    }
+
+    NOTAS_VALIDAS = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
+    ACIDENTES_VALIDOS = {'#', 'b'}
+
+    def analisar(self, programa):
+        for comando in programa.comandos:
+            self.analisar_comando(comando)
+
+    def analisar_comando(self, comando):
+        if isinstance(comando, Definir):
+            self.analisar_definir(comando)
+        elif isinstance(comando, Repetir):
+            self.analisar_repetir(comando)
+        elif isinstance(comando, Nota):
+            self.analisar_nota(comando)
+        elif isinstance(comando, Esperar):
+            self.analisar_esperar(comando)
+        else:
+            raise Exception(f"Erro Semantico: Comando desconhecido {comando}")
+
+    def analisar_definir(self, comando):
+        if comando.propriedade not in self.PROPRIEDADES_VALIDAS:
+            propriedades = ', '.join(self.PROPRIEDADES_VALIDAS)
+            raise Exception(
+                f"Erro Semantico: Propriedade {comando.propriedade!r} nao existe. "
+                f"Use uma destas: {propriedades}"
+            )
+
+        minimo, maximo = self.PROPRIEDADES_VALIDAS[comando.propriedade]
+        if not minimo <= comando.valor <= maximo:
+            raise Exception(
+                f"Erro Semantico: Valor de {comando.propriedade!r} deve estar "
+                f"entre {minimo} e {maximo}"
+            )
+
+    def analisar_repetir(self, comando):
+        if comando.vezes <= 0:
+            raise Exception("Erro Semantico: REPETIR deve executar ao menos 1 vez")
+
+        for comando_interno in comando.comandos:
+            self.analisar_comando(comando_interno)
+
+    def analisar_nota(self, comando):
+        if not self.tom_valido(comando.tom):
+            raise Exception(f"Erro Semantico: Nota musical invalida {comando.tom!r}")
+
+        self.validar_duracao(comando.duracao, 'NOTA')
+
+    def analisar_esperar(self, comando):
+        self.validar_duracao(comando.duracao, 'ESPERAR')
+
+    def validar_duracao(self, duracao, comando):
+        if duracao <= 0:
+            raise Exception(f"Erro Semantico: Duracao de {comando} deve ser maior que 0")
+
+    def tom_valido(self, tom):
+        nota = tom[0]
+        restante = tom[1:]
+
+        if nota not in self.NOTAS_VALIDAS:
+            return False
+
+        if not restante:
+            return True
+
+        if restante[0] in self.ACIDENTES_VALIDOS:
+            restante = restante[1:]
+
+        if not restante:
+            return True
+
+        return restante.isdigit() and 0 <= int(restante) <= 8
+
+
 # ------------------------------------------------------------------------------------------------------------------
 # Definição dos tokens - Lista de tuplas: (Nome do Token, Expressão Regular)
 ESPECIFICACAO_TOKENS = [
@@ -238,5 +317,7 @@ if __name__ == '__main__':
     tokens = analisador_lexico(codigo_miracle_box_3)
     parser = Parser(tokens)
     programa = parser.parse_programa()
+    analisador_semantico = AnalisadorSemantico()
+    analisador_semantico.analisar(programa)
 
     print(programa)
