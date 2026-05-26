@@ -168,7 +168,7 @@ ESPECIFICACAO_TOKENS = [
     ('TOK_ESPERAR',  r'ESPERAR'),          # Palavra-chave específica
     ('TOK_REPETIR',  r'REPETIR'),          # Palavra-chave específica
     ('TOK_NUM',      r'\d+'),              # Números inteiros
-    ('TOK_TOM',      r'[A-G][#b]?[0-8]?'), # Notas musicais: C, F#, Ab3
+    ('TOK_TOM',      r'[A-Z][#b]?[0-9]*'), # Notas musicais: C, F#, Ab3
     ('TOK_ID',       r'[a-z][a-z0-9_]*'),  # Identificadores: bpm, volume
     ('TOK_LPAREN',   r'\('),               # Símbolo (
     ('TOK_RPAREN',   r'\)'),               # Símbolo )
@@ -178,7 +178,7 @@ ESPECIFICACAO_TOKENS = [
     ('TOK_VIRGULA',  r','),                # Separador ,
     ('TOK_COMENT',   r'\$.*'),             # Comentários com $
     ('SKIP',         r'[ \t]+'),           # Espaços e tabs
-    ('NEWLINE',      r'\n'),               # Quebra de linha
+    ('NEWLINE',      r'\r?\n'),            # Quebra de linha
     ('MISMATCH',     r'.'),                # Qualquer outro caractere inválido
 ]
 
