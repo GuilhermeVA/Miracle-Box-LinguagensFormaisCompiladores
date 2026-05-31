@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Miracle Compiler</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Linguagens Formais e Compiladores</p>
+        <h1>Miracle Compiler</h1>
+      </div>
+      <button id="compileButton" type="button">Compilar</button>
+    </header>
+
+    <main class="layout">
+      <section class="editor-panel" aria-label="Editor Miracle">
+        <div class="panel-header">
+          <h2>Código Miracle</h2>
+          <select id="exampleSelect" aria-label="Exemplos">
+            <option value="valid">Programa válido</option>
+            <option value="lexical">Erro léxico</option>
+            <option value="syntax">Erro sintático</option>
+            <option value="semantic">Erro semântico</option>
+          </select>
+        </div>
+        <textarea id="codeInput" spellcheck="false">{{ exemplo_padrao }}</textarea>
+      </section>
+
+      <section class="results-panel" aria-label="Etapas do compilador">
+        <nav class="tabs" aria-label="Resultados">
+          <button class="tab active" data-tab="tokens" type="button">Scanner</button>
+          <button class="tab" data-tab="ast" type="button">AST</button>
+          <button class="tab" data-tab="symbols" type="button">Símbolos</button>
+          <button class="tab" data-tab="errors" type="button">Erros</button>
+          <button class="tab" data-tab="arduino" type="button">Arduino</button>
+        </nav>
+
+        <div class="status" id="status">Pronto para compilar.</div>
+
+        <section class="tab-content active" id="tokens">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Valor</th>
+                  <th>Linha</th>
+                  <th>Coluna</th>
+                </tr>
+              </thead>
+              <tbody id="tokensBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="tab-content" id="ast">
+          <pre id="astOutput"></pre>
+        </section>
+
+        <section class="tab-content" id="symbols">
+          <pre id="symbolsOutput"></pre>
+        </section>
+
+        <section class="tab-content" id="errors">
+          <div id="errorsOutput" class="errors-list"></div>
+        </section>
+
+        <section class="tab-content" id="arduino">
+          <pre id="arduinoOutput"></pre>
+        </section>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

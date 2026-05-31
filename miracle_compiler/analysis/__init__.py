@@ -1,0 +1,1 @@
+from miracle_compiler.analysis.semantic import SemanticAnalyzer
