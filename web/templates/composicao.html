@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miracle Box - Compondo {{ musica.titulo }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="ide-body">
+
+  <input type="hidden" id="musicaId" value="{{ musica.id }}">
+  <input type="hidden" id="exampleSelect" value="none">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <p class="eyebrow-ide">Ambiente de Composição Musical</p>
+      <h1 class="ide-music-title">
+        {{ musica.titulo }} <span class="extension-badge">.mrcb</span>
+      </h1>
+    </div>
+    
+    <div class="topbar-actions">
+      <a href="{{ url_for('view_musicas') }}" class="btn-secondary">Voltar ao Dashboard</a>
+      <button id="saveButton" type="button" class="btn-save">Salvar Progresso</button>
+      <button id="compileButton" type="button" class="btn-compile">Compilar Código</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    
+    <section class="editor-panel" aria-label="Editor Miracle">
+      <div class="panel-header">
+        <h2>Editor de Código</h2>
+        <span class="status-indicator">Modo de Edição Ativo</span>
+      </div>
+      <textarea id="codeInput" spellcheck="false">{{ musica.codigo_mrcb }}</textarea>
+    </section>
+
+    <section class="results-panel" aria-label="Etapas do compilador">
+      <nav class="tabs" aria-label="Resultados">
+        <button class="tab active" data-tab="tokens" type="button">Scanner</button>
+        <button class="tab" data-tab="ast" type="button">AST</button>
+        <button class="tab" data-tab="symbols" type="button">Símbolos</button>
+        <button class="tab" data-tab="errors" type="button">Erros</button>
+        <button class="tab" data-tab="arduino" type="button">Arduino</button>
+      </nav>
+
+      <div class="status" id="status">Pronto para compilar.</div>
+
+      <section class="tab-content active" id="tokens">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Linha</th>
+                <th>Coluna</th>
+              </tr>
+            </thead>
+            <tbody id="tokensBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="tab-content" id="ast">
+        <pre id="astOutput"></pre>
+      </section>
+
+      <section class="tab-content" id="symbols">
+        <pre id="symbolsOutput"></pre>
+      </section>
+
+      <section class="tab-content" id="errors">
+        <div id="errorsOutput" class="errors-list"></div>
+      </section>
+
+      <section class="tab-content" id="arduino">
+        <pre id="arduinoOutput"></pre>
+      </section>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

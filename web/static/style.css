@@ -1,19 +1,1007 @@
 :root {
   color-scheme: light;
-  --bg: #f5f7fb;
-  --panel: #ffffff;
-  --text: #1f2937;
-  --muted: #64748b;
-  --line: #dbe3ef;
-  --accent: #0f766e;
-  --accent-dark: #115e59;
-  --danger: #b91c1c;
-  --warning: #a16207;
+  
+  /* Cores Principais do Projeto */
+  --blue-bg: #84BBFF;       /* Fundo principal / Base do degradê */
+  --blue-shadow: #4781C8;   /* Sombreados e profundidade */
+  --blue-btn: #A2D5FF;      /* Botões padrão (Repouso) */
+  --blue-btn-hover: #3569B1;/* Botão quando pressionado/hover (Tom mais escuro) */
+  
+  /* Cores Neutras */
+  --neutral-soft: #D2C9D2;
+  --white: #FFFFFF;
+  --dark-text: #1F2533;     /* Contraste para textos em fundo claro */
+  
+  /* Cores Complementares (Tons Rosa/Magenta) */
+  --pink-light: #E3C1EF;
+  --magenta-soft: #BE8FC4;
+
+  /* Mantido para o editor de código e status */
+  --code-bg: #0F172A;
+  --danger: #B91C1C;
+  --warning: #A16207;
   --ok: #047857;
-  --code-bg: #111827;
+  --line: rgba(255, 255, 255, 0.15); /* Linhas mais sutis adaptadas ao azul */
 }
 
 * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--blue-bg);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   TELA 1: PÁGINA INICIAL (LANDING PAGE)
+   ========================================================================== */
+.home-body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+
+.landing-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Coluna Esquerda: Transição do gradiente e fundo prismático */
+.hero-left {
+  flex: 1.2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Removido bordas, sombras circulares e fundos da esfera antiga */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.logo-wrapper:hover {
+  transform: scale(1.04);
+}
+
+.main-logo {
+  width: 320px;
+  height: 320px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+/* Coluna Direita: Fundo azul escuro/sombreado */
+.hero-right {
+  flex: 1;
+  background-color: var(--blue-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 80px;
+}
+
+.content-box {
+  max-width: 540px;
+}
+
+/* Estilização exata fornecida pelo Figma */
+.project-title {
+  font-family: 'Jersey 25', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 96px;
+  line-height: 96px;
+  display: flex;
+  align-items: center;
+  color: #E3C1EF;
+  text-shadow: 4px 4px 5.5px #4781C8;
+  margin-bottom: 12px;
+}
+
+.project-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--white);
+  opacity: 0.95;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.project-description {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #F3F4F6;
+  margin-bottom: 40px;
+}
+
+.highlight-code {
+  background-color: var(--code-bg);
+  color: var(--blue-bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+/* Botões baseados nos estados de clique da paleta */
+.btn-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--blue-btn); /* #A2D5FF */
+  color: var(--dark-text);
+  text-decoration: none;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.btn-start:hover {
+  background-color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.btn-start:active {
+  background-color: var(--blue-btn-hover); /* #3569B1 */
+  color: var(--white);
+  transform: translateY(1px);
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.btn-start:hover .btn-icon {
+  transform: translateX(4px);
+}
+
+
+
+
+/* ==========================================================================
+   TELA 2: DASHBOARD DE MÚSICAS (CARDS VERTICAIS & CENTRALIZADOS NO ABSOLUTO)
+   ========================================================================== */
+.dashboard-body {
+  background: linear-gradient(to bottom, #A2D5FF 0%, #4781C8 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header superior do painel */
+.dashboard-header {
+  background-color: var(--blue-shadow);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mini-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.brand-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--white);
+}
+
+.btn-back-home {
+  color: var(--pink-light);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.btn-back-home:hover {
+  color: var(--white);
+}
+
+/* Container principal relativo para servir de âncora ao formulário */
+.dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  padding: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  position: relative; /* Permite posicionar o formulário de forma independente */
+}
+
+/* Painel de Criação fixado na esquerda sem empurrar o centro da tela */
+.creation-panel {
+  position: absolute;
+  left: 40px;
+  top: 40px;
+  background-color: var(--white);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(31, 37, 51, 0.1);
+  color: var(--dark-text);
+  height: fit-content;
+  width: 360px;
+  z-index: 10;
+}
+
+.creation-panel h2, .cards-panel h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--dark-text);
+}
+
+.cards-panel h2 {
+  color: var(--dark-text);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  margin-bottom: 24px;
+  text-align: center;
+  width: 100%;
+}
+
+.panel-tip {
+  font-size: 0.9rem;
+  color: #6B7280;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.music-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dark-text);
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input[type="text"]:focus {
+  border-color: var(--blue-shadow);
+}
+
+.color-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-picker-wrapper input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: none;
+}
+
+.color-picker-wrapper input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-picker-wrapper input[type="color"]::-webkit-color-swatch {
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+}
+
+.color-tip {
+  font-size: 0.85rem;
+  color: #6B7280;
+}
+
+.btn-submit-music {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--blue-shadow);
+  color: var(--white);
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-submit-music:hover {
+  background-color: #3569B1;
+}
+
+.btn-submit-music:active {
+  transform: scale(0.98);
+}
+
+/* Painel de Cards: Ocupa toda a tela ao fundo e centraliza o conteúdo de forma pura */
+.cards-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Grade de 2 colunas travada e simétrica no meio da janela */
+.music-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 240px);
+  gap: 24px;
+  justify-content: center;
+  align-content: start;
+  width: 100%;
+}
+
+/* Container que une o card vertical e as ações inferiores */
+.card-wrapper {
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 240px;
+  height: 270px;
+}
+
+.card-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* O Card linkado (Layout Vertical) */
+.music-card {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 12px 16px;
+  flex: 1;
+  border-top: 6px solid var(--card-color, var(--blue-shadow));
+}
+
+/* Ícone do gramofone no TOPO e MAIOR */
+.card-folder-icon {
+  background-color: #F1F5F9;
+  padding: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.music-card:hover .card-folder-icon {
+  background-color: var(--pink-light);
+}
+
+.folder-img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+/* Informações centralizadas abaixo do gramofone */
+.card-info {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.card-info h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 8px;
+}
+
+.file-extension {
+  font-size: 0.85rem;
+  font-family: monospace;
+  color: var(--magenta-soft);
+  font-weight: 600;
+}
+
+/* Botões de Ações posicionados na base do card */
+.card-actions {
+  display: flex;
+  border-top: 1px solid #F1F5F9;
+  background-color: #F9FAFB;
+  width: 100%;
+}
+
+.card-actions button {
+  background: transparent;
+  border: none;
+  padding: 12px 8px;
+  cursor: pointer;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex: 1;
+  transition: all 0.15s ease;
+}
+
+.card-actions button span {
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-action-edit {
+  border-right: 1px solid #F1F5F9 !important;
+}
+
+.btn-action-edit:hover {
+  color: var(--blue-shadow);
+  background-color: var(--white);
+}
+
+.btn-action-delete:hover {
+  color: var(--danger);
+  background-color: #FEE2E2;
+}
+
+/* Estado Vazio do Dashboard */
+.empty-dashboard {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 60px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.opaque-gramofone {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  opacity: 0.4;
+}
+
+.empty-dashboard p {
+  color: var(--white);
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+/* MODAL BACKDROP */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: var(--white);
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  color: var(--dark-text);
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-cancel {
+  background: #E5E7EB;
+  color: #4B5563;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-cancel:hover {
+  background: #D1D5DB;
+}
+
+/* Media Query ajustada para lidar com a sobreposição absoluta em telas menores */
+@media (max-width: 1024px) {
+  .dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+  .creation-panel {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 504px;
+  }
+  .music-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 504px;
+  }
+  .card-wrapper {
+    width: 100%;
+  }
+}
+
+
+/* ==========================================================================
+   TELA 3: IDE / PÁGINA DE COMPOSIÇÃO COMPLETE STYLING
+   ========================================================================== */
+.ide-body {
+  background-color: var(--blue-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estrutura da Topbar em Azul Escuro */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--line);
+  background: var(--blue-shadow);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.topbar-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.eyebrow-ide {
+  margin: 0 0 4px;
+  color: var(--pink-light);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ide-music-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.extension-badge {
+  font-size: 0.8rem;
+  font-family: monospace;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Botões da Topbar */
+.btn-secondary {
+  color: var(--pink-light);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 16px;
+  border-radius: 6px;
+  transition: color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  color: var(--white);
+}
+
+.btn-save {
+  background-color: var(--pink-light);
+  color: #581C87;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.btn-save:hover {
+  background-color: var(--magenta-soft);
+  color: var(--white);
+}
+
+.btn-compile {
+  border: 0;
+  border-radius: 6px;
+  padding: 10px 18px;
+  background: var(--blue-btn);
+  color: var(--dark-text);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.btn-compile:hover {
+  background: var(--white);
+  transform: translateY(-1px);
+}
+
+.btn-compile:active {
+  background: var(--blue-btn-hover);
+  color: var(--white);
+  transform: translateY(0);
+}
+
+.btn-compile:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+/* Layout de Duas Colunas da IDE */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.9fr) minmax(420px, 1.1fr);
+  gap: 20px;
+  padding: 20px;
+  flex: 1;
+}
+
+.editor-panel,
+.results-panel {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #E5E7EB;
+  background: #F9FAFB;
+}
+
+.panel-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin: 0;
+}
+
+.status-indicator {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ok);
+  background-color: #ECFDF5;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* Área de Texto do Código */
+textarea {
+  width: 100%;
+  min-height: 620px;
+  flex: 1;
+  resize: none;
+  border: 0;
+  padding: 18px;
+  outline: none;
+  background: var(--code-bg);
+  color: #e5e7eb;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* Abas Laterais */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-bottom: 1px solid #E5E7EB;
+  background: #F9FAFB;
+}
+
+.tab {
+  border: 0;
+  border-right: 1px solid #E5E7EB;
+  padding: 14px 10px;
+  background: #F3F4F6;
+  color: #64748b;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+
+.tab:last-child {
+  border-right: 0;
+}
+
+.tab.active {
+  background: var(--white);
+  color: var(--blue-shadow);
+  border-bottom: 3px solid var(--blue-shadow);
+}
+
+/* Caixa de Status */
+.status {
+  margin: 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: #64748b;
+  background: #F9FAFB;
+  font-size: 0.95rem;
+}
+
+.status.success {
+  border-color: #a7f3d0;
+  color: var(--ok);
+  background: #ecfdf5;
+}
+
+.status.failure {
+  border-color: #fecaca;
+  color: var(--danger);
+  background: #fef2f2;
+}
+
+/* ==========================================================================
+   CORREÇÃO DE RENDERIZAÇÃO DO SCANNER (TABELA)
+   ========================================================================= */
+.tab-content {
+  display: none;
+  padding: 0 16px 16px;
+  flex: 1;
+}
+
+.tab-content.active {
+  display: block !important;
+}
+
+.table-wrap {
+  max-height: 540px;
+  overflow-y: auto;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  display: block;
+  background: var(--white);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  display: table !important;
+}
+
+thead {
+  display: table-header-group !important;
+}
+
+tbody {
+  display: table-row-group !important;
+}
+
+tr {
+  display: table-row !important;
+}
+
+th, td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #E5E7EB;
+  text-align: left;
+  vertical-align: middle;
+  display: table-cell !important;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: #F3F4F6;
+  color: #64748b;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  z-index: 2;
+}
+
+td code {
+  background-color: #F1F5F9;
+  color: var(--blue-shadow);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: 600;
+}
+
+/* Containers de Saída Genéricos (AST, Símbolos, Arduino) */
+pre {
+  min-height: 540px;
+  max-height: 540px;
+  overflow: auto;
+  margin: 0;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  padding: 14px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Lista de Erros */
+.errors-list {
+  display: grid;
+  gap: 10px;
+}
+
+.error-card {
+  border-left: 4px solid var(--danger);
+  border-radius: 6px;
+  padding: 12px;
+  background: #fef2f2;
+  color: var(--dark-text);
+}
+
+.error-card.semantico {
+  border-left-color: var(--warning);
+  background: #fffbeb;
+}
+
+.error-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.error-card span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.error-card p {
+  margin: 8px 0 0;
+}
+
+@media (max-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  textarea {
+    min-height: 400px;
+  }
+}
+
+
+/* ==========================================================================
+   FORÇAR VISIBILIDADE DAS COLUNAS DO SCANNER (VALOR, LINHA, COLUNA)
+   ========================================================================== */
+
+/* Garante que todas as células filhas do corpo da tabela tenham tamanho e cor visíveis */
+#tokensBody td {
+  display: table-cell !important;
+  color: var(--dark-text) !important; /* Força a cor escura para o texto não sumir no fundo branco */
+  font-size: 14px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  padding: 12px 14px !important;
+}
+
+/* Alinha os números de Linha e Coluna de forma limpa */
+#tokensBody td:nth-child(3),
+#tokensBody td:nth-child(4) {
+  font-family: monospace;
+  color: #64748b !important; /* Tom cinza sutil para os metadados de localização */
+}
+
+/* Garante que o cabeçalho distribua o espaço igualmente para as 4 colunas */
+#tokens th {
+  width: 25%;
+}
+
+
+/* {
   box-sizing: border-box;
 }
 

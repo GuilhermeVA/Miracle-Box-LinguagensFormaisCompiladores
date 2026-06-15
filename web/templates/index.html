@@ -1,79 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Miracle Compiler</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  </head>
-  <body>
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">Linguagens Formais e Compiladores</p>
-        <h1>Miracle Compiler</h1>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miracle Box - IDE Musical</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .hero-left {
+      background: linear-gradient(to right, rgba(132, 187, 255, 0) 60%, var(--blue-shadow) 100%), 
+                  url("{{ url_for('static', filename='images/fundo.png') }}") no-repeat center center;
+      background-size: cover;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Jersey+25&display=swap" rel="stylesheet">
+</head>
+<body class="home-body">
+
+  <div class="landing-container">
+    
+<div class="hero-left" >
+      <div class="logo-wrapper">
+        <img src="{{ url_for('static', filename='images/logo_mrcb.png') }}" alt="Miracle Box Logo" class="main-logo">
       </div>
-      <button id="compileButton" type="button">Compilar</button>
-    </header>
+    </div>
 
-    <main class="layout">
-      <section class="editor-panel" aria-label="Editor Miracle">
-        <div class="panel-header">
-          <h2>Código Miracle</h2>
-          <select id="exampleSelect" aria-label="Exemplos">
-            <option value="valid">Programa válido</option>
-            <option value="lexical">Erro léxico</option>
-            <option value="syntax">Erro sintático</option>
-            <option value="semantic">Erro semântico</option>
-          </select>
-        </div>
-        <textarea id="codeInput" spellcheck="false">{{ exemplo_padrao }}</textarea>
-      </section>
+    <div class="hero-right">
+      <div class="content-box">
+        <h1 class="project-title">Miracle Box</h1>
+        <h2 class="project-subtitle"> A Música Encontra o Código: Ambiente de Desenvolvimento Musical para Buzzers</h2>
+        
+        <p class="project-description">
+          Explore a nossa DSL exclusiva <span class="highlight-code">.mrcb</span>. Crie composições, analise a árvore sintática, gerencie tabelas de símbolos e gere códigos otimizados para Arduino em um ecossistema integrado para hardware de áudio.
+        </p>
 
-      <section class="results-panel" aria-label="Etapas do compilador">
-        <nav class="tabs" aria-label="Resultados">
-          <button class="tab active" data-tab="tokens" type="button">Scanner</button>
-          <button class="tab" data-tab="ast" type="button">AST</button>
-          <button class="tab" data-tab="symbols" type="button">Símbolos</button>
-          <button class="tab" data-tab="errors" type="button">Erros</button>
-          <button class="tab" data-tab="arduino" type="button">Arduino</button>
-        </nav>
+        <a href="{{ url_for('view_musicas') }}" class="btn-start">
+          Iniciar Projeto
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
 
-        <div class="status" id="status">Pronto para compilar.</div>
+  </div>
 
-        <section class="tab-content active" id="tokens">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Tipo</th>
-                  <th>Valor</th>
-                  <th>Linha</th>
-                  <th>Coluna</th>
-                </tr>
-              </thead>
-              <tbody id="tokensBody"></tbody>
-            </table>
-          </div>
-        </section>
-
-        <section class="tab-content" id="ast">
-          <pre id="astOutput"></pre>
-        </section>
-
-        <section class="tab-content" id="symbols">
-          <pre id="symbolsOutput"></pre>
-        </section>
-
-        <section class="tab-content" id="errors">
-          <div id="errorsOutput" class="errors-list"></div>
-        </section>
-
-        <section class="tab-content" id="arduino">
-          <pre id="arduinoOutput"></pre>
-        </section>
-      </section>
-    </main>
-
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
-  </body>
+</body>
 </html>

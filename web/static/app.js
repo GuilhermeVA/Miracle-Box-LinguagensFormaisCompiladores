@@ -31,6 +31,8 @@ const astOutput = document.querySelector("#astOutput");
 const symbolsOutput = document.querySelector("#symbolsOutput");
 const errorsOutput = document.querySelector("#errorsOutput");
 const arduinoOutput = document.querySelector("#arduinoOutput");
+const saveButton = document.querySelector("#saveButton");
+const musicaIdInput = document.querySelector("#musicaId");
 
 function formatValue(value) {
   if (value === null || value === undefined) {
@@ -128,10 +130,65 @@ document.querySelectorAll(".tab").forEach((button) => {
   });
 });
 
-exampleSelect.addEventListener("change", () => {
-  codeInput.value = examples[exampleSelect.value];
-  compileCode();
-});
+if (exampleSelect && exampleSelect.tagName === "SELECT") {
+  exampleSelect.addEventListener("change", () => {
+    codeInput.value = examples[exampleSelect.value];
+    compileCode();
+  });
+}
 
 compileButton.addEventListener("click", compileCode);
 compileCode();
+
+
+
+// ==========================================================================
+// PERSISTÊNCIA: SALVAR CÓDIGO NO BANCO DE DADOS
+// ==========================================================================
+
+
+async function saveCode() {
+  if (!saveButton || !musicaIdInput) return;
+
+  saveButton.disabled = true;
+  const originalText = saveButton.textContent;
+  saveButton.textContent = "Salvando...";
+
+  const musicaId = musicaIdInput.value;
+  const codigoAtual = codeInput.value;
+
+  try {
+    const response = await fetch(`/api/musicas/salvar/${musicaId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ codigo: codigoAtual }),
+    });
+
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.erro || "Falha ao salvar no banco.");
+    }
+
+    const originalStatus = statusBox.textContent;
+    const originalClass = statusBox.className;
+    
+    statusBox.textContent = "✓ Alterações salvas com sucesso no SQLite!";
+    statusBox.className = "status success";
+
+    setTimeout(() => {
+      statusBox.textContent = originalStatus;
+      statusBox.className = originalClass;
+    }, 3000);
+
+  } catch (error) {
+    alert("Erro ao salvar: " + error.message);
+  } finally {
+    saveButton.disabled = false;
+    saveButton.textContent = originalText;
+  }
+}
+
+if (saveButton) {
+  saveButton.addEventListener("click", saveCode);
+}
