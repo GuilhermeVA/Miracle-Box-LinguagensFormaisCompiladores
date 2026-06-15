@@ -583,29 +583,42 @@ body {
   background: #D1D5DB;
 }
 
-/* Media Query ajustada para lidar com a sobreposição absoluta em telas menores */
-@media (max-width: 1024px) {
+/* ==========================================================================
+   MEDIA QUERY ATUALIZADA - EVITA QUE O FORMULÁRIO COBRA AS MÚSICAS (1350px)
+   ========================================================================== */
+@media (max-width: 1350px) {
   .dashboard-layout {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Joga o formulário para cima da grid */
     align-items: center;
     gap: 40px;
+    padding: 20px;
   }
+
   .creation-panel {
-    position: relative;
+    position: relative;     /* Remove o absolute que causava o atropelamento */
     left: 0;
     top: 0;
     width: 100%;
-    max-width: 504px;
+    max-width: 504px;       /* Alinha perfeitamente com o tamanho da grid */
+    box-sizing: border-box;
   }
-  .music-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 504px;
-  }
-  .card-wrapper {
+
+  .cards-panel {
     width: 100%;
   }
+
+  .music-grid {
+    grid-template-columns: repeat(2, 1fr); /* Torna as colunas fluidas para telas menores */
+    max-width: 504px;
+    width: 100%;
+  }
+
+  .card-wrapper {
+    width: 100%;            /* Os cards preenchem o espaço da coluna fluida */
+  }
 }
+
 
 
 /* ==========================================================================
